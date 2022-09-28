@@ -228,11 +228,11 @@ object Huffman {
   def convert(tree: CodeTree): CodeTable = tree match {
     case Leaf(c, _) => List((c, List()))
     case Fork(l, r, _, _) => {
-      def convertHelper(tree: CodeTree, bits: List[Bit]): CodeTable = tree match {
+      def __convert__(tree: CodeTree, bits: List[Bit]): CodeTable = tree match {
         case Leaf(c, _) => List((c, bits))
-        case Fork(l, r, _, _) => convertHelper(l, 0 :: bits) ::: convertHelper(r, 1 :: bits)
+        case Fork(l, r, _, _) => __convert__(l, 0 :: bits) ::: __convert__(r, 1 :: bits)
       }
-      convertHelper(l, 0 :: List()) ::: convertHelper(r, 1 :: List())
+      __convert__(l, 0 :: List()) ::: __convert__(r, 1 :: List())
     }
   }
 
@@ -242,9 +242,9 @@ object Huffman {
    * on the two parameter code tables.
    */
   def mergeCodeTables(left: CodeTable, right: CodeTable): CodeTable = {
-    val appendZeroToLeft = left map {case(char, list) => (char, 0::list)}
-    val appendOneToRight = right map {case(char, list) => (char, 1::list)}
-    appendZeroToLeft++appendOneToRight
+    val addleftZero = left map {case(char, list) => (char, 0::list)}
+    val addRightOne = right map {case(char, list) => (char, 1::list)}
+    addleftZero++addRightOne
   }
 
   /**
